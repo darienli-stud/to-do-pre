@@ -50,3 +50,34 @@ function createItem(item) {
 
 	return clone;
 }
+
+function getTasksFromDOM() {
+	let itemsNamesElements = document.querySelectorAll('.to-do__item-text');
+	const tasks = [];
+	itemsNamesElements.forEach( function (item) {
+		tasks.push(item.textContent);
+	});
+	return tasks;
+}
+
+function saveTasks(tasks) {
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+items = loadTasks();
+
+items.forEach((item) => {
+	const itemElement = createItem(item);
+	listElement.append(itemElement);
+});
+
+formElement.addEventListener('submit', function (evt) {
+	evt.preventDefault(); 
+	const outputText = inputElement.value; 
+	const itemElements = createItem(outputText);
+	listElement.prepend(itemElements);
+	items = getTasksFromDOM();
+	saveTasks(items);
+	inputElement.value = ''; 
+
+});
